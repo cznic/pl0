@@ -8,4 +8,4 @@ Installation
 
 Documentation: [godoc.org/github.com/cznic/pl0](http://godoc.org/github.com/cznic/pl0)
 
-PL/0 executor documentation: [godoc.org/github.com/cznic/pl0/pl0](http://godoc.org/github.com/cznic/plO/pl0)
+PL/0 executor documentation: [godoc.org/github.com/cznic/pl0/pl0](http://godoc.org/github.com/cznic/pl0/pl0)
