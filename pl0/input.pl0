@@ -1,0 +1,9 @@
+VAR input;
+
+BEGIN
+	? input;
+	WHILE input > 0 DO BEGIN
+		! input;
+		input := input - 1;
+	END;
+END.

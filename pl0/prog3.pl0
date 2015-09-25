@@ -1,0 +1,46 @@
+VAR a1, recur;
+
+PROCEDURE p2;
+VAR a2;
+
+	PROCEDURE p3;
+	VAR a3;
+	BEGIN // p3
+		a3 := 3;
+		! 333333;
+		! a1;
+		! a2;
+		! a3;
+	END;
+
+	PROCEDURE p4;
+	VAR a3;
+	BEGIN // p4
+		a3 := 4;
+		CALL p3;
+		! 444444;
+		! a1;
+		! a2;
+		! a3;
+		WHILE recur > 0 DO BEGIN
+			recur := recur - 1;
+			CALL p2;
+		END;
+	END;
+
+BEGIN // p2
+	a2 := 2;
+	! 222222;
+	! a1;
+	! a2;
+	CALL p4;
+END;
+
+BEGIN // main
+	a1 := 1;
+	recur := 2;
+	! 111111;
+	! a1;
+	CALL p2;
+	! 999999;
+END.
