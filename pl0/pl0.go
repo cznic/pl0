@@ -25,7 +25,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/cznic/tmp/pl0" //TODO -tmp
+	"github.com/cznic/pl0"
 )
 
 func main() {

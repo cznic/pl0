@@ -33,7 +33,19 @@ func (n *Block) String() string {
 
 // Pos reports the position of the first component of n or zero if it's empty.
 func (n *Block) Pos() token.Pos {
-	return n.ConstsOpt.Pos()
+	if p := n.ConstsOpt.Pos(); p != 0 {
+		return p
+	}
+
+	if p := n.VarsOpt.Pos(); p != 0 {
+		return p
+	}
+
+	if p := n.ProcListOpt.Pos(); p != 0 {
+		return p
+	}
+
+	return n.Statement.Pos()
 }
 
 // Condition represents data reduced by productions:
@@ -63,10 +75,10 @@ func (n *Condition) String() string {
 // Pos reports the position of the first component of n or zero if it's empty.
 func (n *Condition) Pos() token.Pos {
 	switch n.Case {
-	case 0:
-		return n.Token.Pos()
 	case 1, 2, 3, 4, 5, 6:
 		return n.Expression.Pos()
+	case 0:
+		return n.Token.Pos()
 	default:
 		panic("internal error")
 	}
@@ -132,11 +144,14 @@ func (n *ConstSpecList) String() string {
 
 // Pos reports the position of the first component of n or zero if it's empty.
 func (n *ConstSpecList) Pos() token.Pos {
-	if x := n.ConstSpecList; x != nil {
-		return x.Pos()
+	switch n.Case {
+	case 0:
+		return n.ConstSpec.Pos()
+	case 1:
+		return n.ConstSpecList.Pos()
+	default:
+		panic("internal error")
 	}
-
-	return n.ConstSpec.Pos()
 }
 
 // Consts represents data reduced by production:
@@ -210,15 +225,13 @@ func (n *Expression) String() string {
 
 // Pos reports the position of the first component of n or zero if it's empty.
 func (n *Expression) Pos() token.Pos {
-	if x := n.Expression; x != nil {
-		return x.Pos()
-	}
-
 	switch n.Case {
-	case 0, 1:
-		return n.Token.Pos()
+	case 3, 4:
+		return n.Expression.Pos()
 	case 2:
 		return n.Term.Pos()
+	case 0, 1:
+		return n.Token.Pos()
 	default:
 		panic("internal error")
 	}
@@ -248,10 +261,10 @@ func (n *Factor) String() string {
 // Pos reports the position of the first component of n or zero if it's empty.
 func (n *Factor) Pos() token.Pos {
 	switch n.Case {
-	case 0, 2:
-		return n.Token.Pos()
 	case 1:
 		return n.Number.Pos()
+	case 0, 2:
+		return n.Token.Pos()
 	default:
 		panic("internal error")
 	}
@@ -315,11 +328,14 @@ func (n *ProcList) String() string {
 
 // Pos reports the position of the first component of n or zero if it's empty.
 func (n *ProcList) Pos() token.Pos {
-	if x := n.ProcList; x != nil {
-		return x.Pos()
+	switch n.Case {
+	case 1:
+		return n.ProcList.Pos()
+	case 0:
+		return n.ProcSpec.Pos()
+	default:
+		panic("internal error")
 	}
-
-	return n.ProcSpec.Pos()
 }
 
 // ProcListOpt represents data reduced by productions:
@@ -393,7 +409,11 @@ func (n *Program) String() string {
 
 // Pos reports the position of the first component of n or zero if it's empty.
 func (n *Program) Pos() token.Pos {
-	return n.Block.Pos()
+	if p := n.Block.Pos(); p != 0 {
+		return p
+	}
+
+	return n.Token.Pos()
 }
 
 // Statement represents data reduced by productions:
@@ -474,11 +494,18 @@ func (n *StatementList) String() string {
 
 // Pos reports the position of the first component of n or zero if it's empty.
 func (n *StatementList) Pos() token.Pos {
-	if x := n.StatementList; x != nil {
-		return x.Pos()
-	}
+	switch n.Case {
+	case 0:
+		return n.Statement.Pos()
+	case 1:
+		if p := n.StatementList.Pos(); p != 0 {
+			return p
+		}
 
-	return n.Statement.Pos()
+		return n.Token.Pos()
+	default:
+		panic("internal error")
+	}
 }
 
 // Term represents data reduced by productions:
@@ -503,11 +530,14 @@ func (n *Term) String() string {
 
 // Pos reports the position of the first component of n or zero if it's empty.
 func (n *Term) Pos() token.Pos {
-	if x := n.Term; x != nil {
-		return x.Pos()
+	switch n.Case {
+	case 0:
+		return n.Factor.Pos()
+	case 1, 2:
+		return n.Term.Pos()
+	default:
+		panic("internal error")
 	}
-
-	return n.Factor.Pos()
 }
 
 // Variable represents data reduced by production:
@@ -569,11 +599,14 @@ func (n *VariableList) String() string {
 
 // Pos reports the position of the first component of n or zero if it's empty.
 func (n *VariableList) Pos() token.Pos {
-	if x := n.VariableList; x != nil {
-		return x.Pos()
+	switch n.Case {
+	case 0:
+		return n.Variable.Pos()
+	case 1:
+		return n.VariableList.Pos()
+	default:
+		panic("internal error")
 	}
-
-	return n.Variable.Pos()
 }
 
 // Vars represents data reduced by production:
