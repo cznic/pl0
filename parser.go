@@ -174,6 +174,25 @@ var (
 		"error",
 	}
 
+	yyTokenLiteralStrings = map[int]string{
+		57353: "identifier",
+		57351: "END",
+		57350: "DO",
+		57359: "THEN",
+		57356: "integer literal",
+		57347: "BEGIN",
+		57348: "CALL",
+		57354: "IF",
+		57361: "WHILE",
+		57352: ">=",
+		57355: "<=",
+		57358: "PROCEDURE",
+		57360: "VAR",
+		57357: "ODD",
+		57349: "CONST",
+		57346: ":=",
+	}
+
 	yyReductions = map[int]struct{ xsym, components int }{
 		0:  {0, 1},
 		1:  {52, 2},
@@ -471,6 +490,10 @@ func yySymName(c int) (s string) {
 		return yySymNames[x]
 	}
 
+	if c < 0x7f {
+		return __yyfmt__.Sprintf("'%c'", c)
+	}
+
 	return __yyfmt__.Sprintf("%d", c)
 }
 
@@ -587,7 +610,21 @@ yynewstate:
 			if !ok {
 				msg, ok = yyXErrors[yyXError{yyshift, -1}]
 			}
-			if !ok || msg == "" {
+			if yychar > 0 {
+				ls := yyTokenLiteralStrings[yychar]
+				if ls == "" {
+					ls = yySymName(yychar)
+				}
+				if ls != "" {
+					switch {
+					case msg == "":
+						msg = __yyfmt__.Sprintf("unexpected %s", ls)
+					default:
+						msg = __yyfmt__.Sprintf("unexpected %s, %s", ls, msg)
+					}
+				}
+			}
+			if msg == "" {
 				msg = "syntax error"
 			}
 			yylex.Error(msg)
