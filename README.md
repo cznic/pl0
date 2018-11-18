@@ -1,11 +1,5 @@
-# pl0
+`github.com/cznic/pl0` has moved to [`modernc.org/pl0`](https://godoc.org/modernc.org/pl0) ([vcs](https://gitlab.com/cznic/pl0)).
 
-PL/0 front end, compiler and VM. 
+Please update your import paths to `modernc.org/pl0`.
 
-Installation
-
-    $ go get github.com/cznic/pl0/...
-
-Documentation: [godoc.org/github.com/cznic/pl0](http://godoc.org/github.com/cznic/pl0)
-
-PL/0 executor documentation: [godoc.org/github.com/cznic/pl0/pl0](http://godoc.org/github.com/cznic/pl0/pl0)
+This repo is now archived.
